@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "svk-userapp.fullname" . }}-configuration
+  labels:
+    {{- include "svk-userapp.labels" . | nindent 4 }}
+data:
+  SPRING_DATASOURCE_PLATFORM: "postgres"
+  SPRING_DATASOURCE_URL: {{ printf "jdbc:postgresql://%s-%s:%s/%s" .Release.Name .Values.postgresql.nameOverride .Values.postgresql.service.port .Values.postgresql.postgresqlDatabase  | quote }}
+  SERVER_PORT: {{.Values.appDemo.spring.server.port | quote}}
+  SPRING_DATASOURCE_USERNAME: {{.Values.postgresql.postgresqlUsername | quote}}
+

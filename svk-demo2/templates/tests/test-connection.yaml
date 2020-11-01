@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "svk-userapp.fullname" . }}-test-connection"
+  labels:
+    {{- include "svk-userapp.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "svk-userapp.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
